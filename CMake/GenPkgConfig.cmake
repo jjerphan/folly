@@ -105,6 +105,15 @@ function(gen_pkgconfig_vars)
     )
   endif()
 
+  # On Windows replace "$<$<COMPILE_LANGUAGE:CXX>:/utf-8>" with "/utf-8"
+  # See: https://github.com/facebook/folly/issues/1433
+  if(WIN32)
+    string(REPLACE
+      "$<$<COMPILE_LANGUAGE:CXX>:/utf-8>" "/utf-8"
+      cflags "${cflags}"
+    )
+  endif()
+
   set("${var_prefix}_CFLAGS" "${cflags}" PARENT_SCOPE)
   set("${var_prefix}_PRIVATE_LIBS" "${private_libs}" PARENT_SCOPE)
 endfunction()
